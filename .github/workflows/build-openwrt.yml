@@ -22,8 +22,8 @@ on:
     types: started
 
 env:
-  REPO_URL: https://github.com/Lienol/openwrt
-  REPO_BRANCH: dev-lean-lede
+  REPO_URL: https://github.com/coolsnowwolf/lede.git
+  REPO_BRANCH: master
   CONFIG_FILE: .config
   DIY_SH: diy.sh
   SSH_ACTIONS: false
@@ -63,8 +63,21 @@ jobs:
     - name: Clone source code
       run: git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
 
+    - name: Clone other packages
+      run: |
+        git clone https://github.com/Mrbai98/luci-theme-atmaterial.git openwrt/package/luci-theme-atmaterial
+        git clone https://github.com/rufengsuixing/luci-app-adguardhome.git openwrt/package/luci-app-adguardhome && echo "#https://cdn.jsdelivr.net/gh/AdguardTeam/AdGuardHome/AdGuardHome_linux_${Arch}.tar.gz" > openwrt/package/luci-app-adguardhome/root/usr/share/AdGuardHome/links.txt
+        git clone https://github.com/pymumu/smartdns.git openwrt/package/smartdns
+        git clone https://github.com/Apocalypsor/luci-app-smartdns.git openwrt/package/luci-app-smartdns
+        git clone https://github.com/frainzy1477/luci-app-clash.git openwrt/package/luci-app-clash
+        git clone https://github.com/project-openwrt/luci-app-koolproxyR.git openwrt/package/luci-app-koolproxyR
+        git clone https://github.com/vernesong/OpenClash.git && mv OpenClash/luci-app-openclash openwrt/package/luci-app-openclash
+        
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: |
+        cd openwrt 
+        echo "src-git lienol https://github.com/Lienol/openwrt-package" >> feeds.conf.default
+        ./scripts/feeds update -a
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
@@ -73,98 +86,13 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         rm -f openwrt/.config*
-        touch openwrt/.config
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_SH
         cd openwrt
         ../$DIY_SH
-        
-          #
-          # ========================固件定制部分========================
-          
-          # 编译N1固件:
-          cat >> .config <<EOF
-          CONFIG_TARGET_armvirt=y
-          CONFIG_TARGET_armvirt_64=y
-          CONFIG_TARGET_armvirt_64_Default=y
-          EOF
-          
-          # 常用LuCI插件选择: 添加外面的主题和应用，包是通过diy.sh 脚本进行下载。
-          cat >> .config <<EOF
-          CONFIG_DEFAULT_luci-app-adbyby-plus=n
-          CONFIG_DEFAULT_luci-app-arpbind=y
-          CONFIG_DEFAULT_luci-app-autoreboot=y
-          CONFIG_DEFAULT_luci-app-ddns=y
-          CONFIG_DEFAULT_luci-app-filetransfer=y
-          CONFIG_DEFAULT_luci-app-flowoffload=y
-          CONFIG_DEFAULT_luci-app-nlbwmon=n
-          CONFIG_DEFAULT_luci-app-passwall=y
-          CONFIG_DEFAULT_luci-app-pppoe-relay=n
-          CONFIG_DEFAULT_luci-app-pppoe-server=n
-          CONFIG_DEFAULT_luci-app-pptp-vpnserver-manyusers=n
-          CONFIG_DEFAULT_luci-app-ramfree=y
-          CONFIG_DEFAULT_luci-app-sfe=y
-          CONFIG_DEFAULT_luci-app-sqm=n
-          CONFIG_DEFAULT_luci-app-ssr-python-pro-server=n
-          CONFIG_DEFAULT_luci-app-upnp=y
-          CONFIG_DEFAULT_luci-app-v2ray-server=n
-          CONFIG_DEFAULT_luci-app-vlmcsd=n
-          CONFIG_DEFAULT_luci-app-vsftpd=y
-          CONFIG_DEFAULT_luci-app-wol=n
-          CONFIG_DEFAULT_luci-proto-relay=y
-          CONFIG_DEFAULT_luci-theme-argon-mod=n
-          CONFIG_DEFAULT_luci-theme-bootstrap-mod=y
-          CONFIG_DEFAULT_luci-theme-netgear-mc=n
-          CONFIG_PACKAGE_luci-app-ssr-plus=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_obfs=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_plugin=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
-          CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
-          CONFIG_PACKAGE_luci-app-passwall=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ipt2socks=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Shadowsocks_socks=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ShadowsocksR_socks=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_V2ray=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Trojan=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_Brook=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_kcptun=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_haproxy=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_ChinaDNS_NG=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_pdnsd=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_dns2socks=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_v2ray-plugin=y
-          CONFIG_PACKAGE_luci-app-passwall_INCLUDE_simple-obfs=y
-          EOF
-          
-          # 关闭ipv6:
-          #cat >> .config <<EOF
-          #CONFIG_KERNEL_IPV6=n
-          #CONFIG_KERNEL_IPV6_MULTIPLE_TABLES=n
-          #CONFIG_KERNEL_IPV6_SUBTREES=n
-          #CONFIG_KERNEL_IPV6_MROUTE=n
-          #CONFIG_IPV6=n
-          #EOF
-          
-          # 常用软件包:
-          cat >> .config <<EOF
-          CONFIG_PACKAGE_curl=y
-          CONFIG_PACKAGE_htop=y
-          #CONFIG_PACKAGE_screen=y
-          #CONFIG_PACKAGE_tree=y
-          #CONFIG_PACKAGE_vim-fuller=y
-          CONFIG_PACKAGE_wget=y
-          EOF
-          
-          # ========================固件定制部分结束========================
-          # 
-          sed -i 's/^[ \t]*//g' .config
-          make defconfig
-         
+    #若使用./scripts/diffconfig.sh > config.seed生成的差异文件恢复扩展为完整的.config配置文件请删除下行
+        # make defconfig    
+                  
     - name: SSH connection to Actions
       uses: P3TERX/debugger-action@master
       if: env.SSH_ACTIONS == 'true'
@@ -182,6 +110,7 @@ jobs:
       id: compile
       run: |
         cd openwrt
+        ./scripts/diffconfig.sh > seed.config
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 V=s
         echo "::set-output name=status::success"
