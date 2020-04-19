@@ -11,3 +11,5 @@
 echo "iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE" >> package/network/config/firewall/files/firewall.user
 # Debug kpr adapt aarch64
 sed -i 's/,arm/,aarch64/' package/luci-app-koolproxyR/Makefile
+#Get Version
+TAG_Ver=$(grep -o -e 'R20.[[:digit:]].[[:digit:]]' package/lean/default-settings/files/zzz-default-settings)
