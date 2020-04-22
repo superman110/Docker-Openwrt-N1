@@ -146,6 +146,7 @@ jobs:
 
     - name: Image - build&push docker image
       run: |
+        TAG_Ver=$(grep -o -e 'R20.[[:digit:]].[[:digit:]]' openwrt/package/lean/default-settings/files/zzz-default-settings)
         cd n1
         sudo bash build.sh $TAG_Ver
         
