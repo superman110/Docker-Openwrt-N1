@@ -29,3 +29,6 @@ cp -r package-temp/small/* package/lean/
 mv -f package-temp/lua-maxminddb package/lean/
 mv -f package-temp/luci-app-vssr package/lean/
 rm -rf package-temp
+
+# Add luci-app-amlogic
+svn co https://github.com/ophub/luci-app-amlogic/trunk/luci-app-amlogic package/luci-app-amlogic
