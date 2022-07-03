@@ -73,22 +73,21 @@ svn co https://github.com/Lienol/openwrt-package/trunk/luci-app-ssr-mudb-server 
 svn co https://github.com/halldong/luci-app-speederv2/trunk package/luci-app-speederv2
 
 #svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-app-gost package/luci-app-gost
-cp -rf $GITHUB_WORKSPACE/general/luci-app-gost package/luci-app-gost
-svn co https://github.com/kenzok8/openwrt-packages/trunk/gost package/gost
-#svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/luci-app-gost package/luci-app-gost
-#svn co https://github.com/project-openwrt/openwrt/trunk/package/ctcgfw/gost package/gost
+#svn co https://github.com/kenzok8/openwrt-packages/trunk/gost package/gost
+svn co https://github.com/immortalwrt/luci/branches/openwrt-18.06/applications/luci-app-gost package/luci-app-gost
+svn co https://github.com/immortalwrt/packages/branches/openwrt-18.06/net/gost package/gost
 
 svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-app-eqos package/luci-app-eqos
 
 #添加smartdns
-#svn co https://github.com/project-openwrt/openwrt/trunk/package/ntlf9t/smartdns package/smartdns
-#svn co https://github.com/project-openwrt/openwrt/trunk/package/ntlf9t/luci-app-smartdns package/luci-app-smartdns
-#svn co https://github.com/openwrt/luci/trunk/applications/luci-app-smartdns package/luci-app-smartdns
-svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-app-smartdns package/luci-app-smartdns
+#svn co https://github.com/immortalwrt/packages/branches/openwrt-18.06/net/smartdns package/smartdns
+svn co https://github.com/kenzok8/openwrt-packages/trunk/smartdns package/smartdns
+#svn co https://github.com/garypang13/openwrt-packages/trunk/smartdns-le package/smartdns-le
+svn co https://github.com/immortalwrt/luci/branches/openwrt-18.06/applications/luci-app-smartdns package/luci-app-smartdns
 
 #mosdns
-#svn co https://github.com/QiuSimons/openwrt-mos/trunk/mosdns package/mosdns
-svn co https://github.com/QiuSimons/openwrt-mos/trunk/luci-app-mosdns package/luci-app-mosdns
+svn co https://github.com/kenzok8/openwrt-packages/trunk/mosdns package/mosdns
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-app-mosdns package/luci-app-mosdns
 
 #svn co https://github.com/immortalwrt/luci/branches/openwrt-18.06/applications/luci-app-socat package/luci-app-socat
 
