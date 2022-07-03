@@ -128,7 +128,7 @@ svn co https://github.com/ophub/luci-app-amlogic/trunk/luci-app-amlogic package/
 #修改晶晨宝盒默认配置
 
 # 1.Set the download repository of the OpenWrt files to your github.com
-sed -i "s|https.*/OpenWrt|https://github.com/superman110/OpenWrt-AArch64|g" package/luci-app-amlogic/root/etc/config/amlogic
+sed -i "s|https.*/OpenWrt|https://github.com/superman110/Docker-Openwrt-N1|g" package/luci-app-amlogic/root/etc/config/amlogic
 
 # 2.Set the keywords of Tags in your github.com Releases
 #sed -i "s|ARMv8|ARMv8|g" package/luci-app-amlogic/root/etc/config/amlogic
