@@ -25,7 +25,7 @@ cd luci-app-wrtbwmon
 git reset --hard ff7773abbf71120fc39a276393b29ba47353a7e2
 cp -r luci-app-wrtbwmon ../package/
 
-sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
-sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
-git pull
+echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
+echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
+
 
