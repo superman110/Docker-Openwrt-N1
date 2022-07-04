@@ -96,6 +96,7 @@ git clone https://github.com/brvphoenix/luci-app-wrtbwmon
 cd luci-app-wrtbwmon
 git reset --hard ff7773abbf71120fc39a276393b29ba47353a7e2
 cp -r luci-app-wrtbwmon ../package/
+cd ..
 
 #修改makefile
 find package/*/ -maxdepth 2 -path "*/Makefile" | xargs -i sed -i 's/include\ \.\.\/\.\.\/luci\.mk/include \$(TOPDIR)\/feeds\/luci\/luci\.mk/g' {}
